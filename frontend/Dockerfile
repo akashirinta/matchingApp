@@ -1,12 +1,17 @@
-# ベースとなるイメージを指定
-FROM node:14
+# 使用するNode.jsのバージョンを指定。'lts'は最新のLTS(Long Term Support)バージョンを意味します。
+FROM node:lts
 
 # 作業ディレクトリを設定
 WORKDIR /app
 
+# package.jsonとpackage-lock.jsonをコピー
+COPY package*.json ./
+
 # 依存関係をインストール
-COPY package.json package-lock.json /app/
 RUN npm install
 
-# プロジェクトファイルをコピー
-COPY . /app/
+# すべてのファイルをコピー
+COPY . .
+
+# 開発サーバーを起動
+CMD ["npm", "run", "dev"]
