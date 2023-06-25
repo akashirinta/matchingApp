@@ -7,6 +7,9 @@ WORKDIR /app
 # package.jsonとpackage-lock.jsonをコピー
 COPY package*.json ./
 
+# npmのキャッシュをクリア
+RUN npm cache clean --force
+
 # 依存関係をインストール
 RUN npm install
 
