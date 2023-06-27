@@ -1,39 +1,33 @@
-name: Continuous Integration
+name: CI
 
-on: [push, pull_request]
+on: [push, pull_request, commit]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm test
-
   build:
-    needs: test
+
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
 
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    # For frontend
+    - name: Frontend CI
+      run: |
+        cd Frontend
+        npm ci
+        npm run build
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
+    # For backend
+    - name: Backend CI
+      run: |
+        cd Backend
+        npm ci
+        npm run build
