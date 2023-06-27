@@ -19,15 +19,15 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     # For frontend
-    - name: Frontend CI
+    - name: frontend CI
       run: |
         cd frontend
         npm ci
         npm run build
 
     # For backend
-    - name: Backend CI
+    - name: backend CI
       run: |
-        cd Backend
+        cd backend
         npm ci
         npm run build
