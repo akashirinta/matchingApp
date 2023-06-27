@@ -21,7 +21,7 @@ jobs:
     # For frontend
     - name: Frontend CI
       run: |
-        cd Frontend
+        cd frontend
         npm ci
         npm run build
 
